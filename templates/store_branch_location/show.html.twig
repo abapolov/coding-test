@@ -1,10 +1,17 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}StoreBranchLocation{% endblock %}
+{% block title %}Show "{{ store_branch_location.name }}"{% endblock %}
+
+{% block breadcrambs %}
+    <nav class="breadcrumb is-right" aria-label="breadcrumbs">
+        <ul>
+            <li><a href="{{ path('store_branch_location_index') }}">Home</a></li>
+            <li class="is-active"><a href="#" aria-current="page">Show "{{ store_branch_location.name }}"</a></li>
+        </ul>
+    </nav>
+{% endblock %}
 
 {% block body %}
-    <h1>StoreBranchLocation</h1>
-
     <table class="table">
         <tbody>
             <tr>

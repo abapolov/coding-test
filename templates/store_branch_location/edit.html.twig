@@ -1,10 +1,17 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit StoreBranchLocation{% endblock %}
+{% block title %}Edit "{{ store_branch_location.name }}"{% endblock %}
+
+{% block breadcrambs %}
+    <nav class="breadcrumb is-right" aria-label="breadcrumbs">
+        <ul>
+            <li><a href="{{ path('store_branch_location_index') }}">Home</a></li>
+            <li class="is-active"><a href="#" aria-current="page">Edit "{{ store_branch_location.name }}"</a></li>
+        </ul>
+    </nav>
+{% endblock %}
 
 {% block body %}
-    <h1>Edit StoreBranchLocation</h1>
-
     {{ include('store_branch_location/_form.html.twig', {'button_label': 'Update'}) }}
 
     <a href="{{ path('store_branch_location_index') }}">back to list</a>

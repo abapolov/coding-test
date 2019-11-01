@@ -4,7 +4,8 @@ namespace App\Services;
 
 use App\Entity\StoreBranchLocation;
 use App\Handler\EntityHandler;
-use Doctrine\Common\Collections\Collection;
+use App\Handler\KNPHandler;
+use Knp\Component\Pager\Pagination\PaginationInterface;
 
 /**
  * Class StoreBranchLocationService
@@ -19,23 +20,41 @@ class StoreBranchLocationService
     public $entityHandler;
 
     /**
+     * @var KNPHandler
+     */
+    public $KNPHandler;
+
+    /**
      * StoreBranchLocationService constructor.
      *
      * @param EntityHandler $entityHandler
+     * @param KNPHandler    $KNPHandler
      */
-    public function __construct(EntityHandler $entityHandler)
+    public function __construct(EntityHandler $entityHandler, KNPHandler $KNPHandler)
     {
         $this->entityHandler = $entityHandler;
+        $this->KNPHandler    = $KNPHandler;
     }
 
     /**
-     * @return StoreBranchLocation[]
+     * @param array $params
+     *
+     * @return PaginationInterface
      */
-    public function getAllBranchLocations(): array
+    public function getAllBranchLocations(array $params): PaginationInterface
     {
         return $this
-            ->entityHandler
-            ->getRepository(StoreBranchLocation::class)
-            ->findAll();
+            ->KNPHandler
+            ->getPaginator()
+            ->paginate(
+                $this
+                    ->entityHandler
+                    ->getRepository(StoreBranchLocation::class)
+                    ->findAllQuery(
+                        $params['search_word']
+                    ),
+                $params['page'],
+                15
+            );
     }
 }

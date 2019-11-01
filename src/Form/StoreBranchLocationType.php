@@ -4,6 +4,8 @@ namespace App\Form;
 
 use App\Entity\StoreBranchLocation;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -21,9 +23,15 @@ class StoreBranchLocationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name')
-            ->add('address')
-            ->add('numberOfEmployees');
+            ->add('name', TextType::class, [
+                'label' => 'Branch location name'
+            ])
+            ->add('address', TextType::class, [
+                'label' => 'Branch location address'
+            ])
+            ->add('numberOfEmployees', NumberType::class, [
+                'label' => 'Branch location number of employees'
+            ]);
     }
 
     /**

@@ -1,43 +1,116 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}StoreBranchLocation index{% endblock %}
+{% block title %}Manager | Store Branch Location{% endblock %}
 
 {% block body %}
-    <h1>StoreBranchLocation index</h1>
-
-    <table class="table">
-        <thead>
+    <nav class="level">
+        <div class="level-left">
+            <div class="level-item">
+                <div class="field has-addons">
+                    <p class="control">
+                        <input value="{{ app.request.get('search') }}" class="input js-table-search" type="text" placeholder="Search">
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="level-right">
+            <p class="level-item"><a href="{{ path('store_branch_location_new') }}" class="button is-success">Create new</a></p>
+        </div>
+    </nav>
+    <div class="js-content-wrapper">
+        <table class="table is-bordered">
+            <thead>
             <tr>
-                <th>Id</th>
-                <th>Name</th>
-                <th>Address</th>
-                <th>NumberOfEmployees</th>
-                <th>CreatedAt</th>
-                <th>UpdatedAt</th>
-                <th>actions</th>
+                <th>ID</th>
+                <th>NAME</th>
+                <th>ADDRESS</th>
+                <th>NUMBER OF EMPLOYEES</th>
+                <th>CREATED AT</th>
+                <th>UPDATED AT</th>
+                <th>ACTIONS</th>
             </tr>
-        </thead>
-        <tbody>
-        {% for store_branch_location in store_branch_locations %}
-            <tr>
-                <td>{{ store_branch_location.id }}</td>
-                <td>{{ store_branch_location.name }}</td>
-                <td>{{ store_branch_location.address }}</td>
-                <td>{{ store_branch_location.numberOfEmployees }}</td>
-                <td>{{ store_branch_location.createdAt ? store_branch_location.createdAt|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ store_branch_location.updatedAt ? store_branch_location.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
-                <td>
-                    <a href="{{ path('store_branch_location_show', {'id': store_branch_location.id}) }}">show</a>
-                    <a href="{{ path('store_branch_location_edit', {'id': store_branch_location.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="7">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-
-    <a href="{{ path('store_branch_location_new') }}">Create new</a>
+            </thead>
+            <tbody>
+            {% for store_branch_location in store_branch_locations %}
+                <tr>
+                    <td>{{ store_branch_location.id }}</td>
+                    <td>{{ store_branch_location.name|highlight(app.request.get('search'))|raw }}</td>
+                    <td>{{ store_branch_location.address|highlight(app.request.get('search'))|raw }}</td>
+                    <td>{{ store_branch_location.numberOfEmployees|highlight(app.request.get('search'))|raw }}</td>
+                    <td>{{ store_branch_location.createdAt ? store_branch_location.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                    <td>{{ store_branch_location.updatedAt ? store_branch_location.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+                    <td>
+                        <div class="field has-addons">
+                            <p class="control">
+                                <a href="{{ path('store_branch_location_show', {'id': store_branch_location.id}) }}" class="button">
+                                <span class="icon is-small">
+                                    <i class="fas fa-eye"></i>
+                                </span>
+                                    <span>SHOW</span>
+                                </a>
+                            </p>
+                            <p class="control">
+                                <a href="{{ path('store_branch_location_edit', {'id': store_branch_location.id}) }}" class="button">
+                                <span class="icon is-small">
+                                    <i class="fas fa-edit"></i>
+                                </span>
+                                    <span>EDIT</span>
+                                </a>
+                            </p>
+                        </div>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="7">NO RECORDS FOUND</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        {{ knp_pagination_render(store_branch_locations) }}
+    </div>
 {% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="http://benalman.com/code/projects/jquery-throttle-debounce/jquery.ba-throttle-debounce.js"></script>
+    <script>
+        $(document).ready(function () {
+            /** Table search **/
+            let searchRequest = null,
+                searchInput   = $(".js-table-search");
+
+            function updateQueryStringParameter(uri, key, value) {
+                let re        = new RegExp("([?&])" + key + "=.*?(&|$)", "i"),
+                    separator = uri.indexOf('?') !== -1 ? "&" : "?";
+
+                if (uri.match(re)) {
+                    return uri.replace(re, '$1' + key + "=" + value + '$2');
+                } else {
+                    return uri + separator + key + "=" + value;
+                }
+            }
+
+            let searchEvents = function () {
+                if (searchRequest) {
+                    searchRequest.abort()
+                }
+
+                searchRequest = $.get(updateQueryStringParameter(
+                    window.location.href,
+                    'search',
+                    $(this).val()
+                ), function (data) {
+                    $('.js-content-wrapper').replaceWith($(data).find('.js-content-wrapper'));
+                });
+            };
+
+            searchInput.on({
+                change: searchEvents,
+                keyup: $.debounce(500, searchEvents)
+            });
+            /** End of Table search **/
+        });
+    </script>
+{% endblock javascripts %}

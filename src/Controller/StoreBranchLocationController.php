@@ -35,13 +35,19 @@ class StoreBranchLocationController extends AbstractController
 
     /**
      * @Route("/", name="store_branch_location_index", methods={"GET"})
+     * @param Request $request
+     *
+     * @return Response
      */
-    public function index(): Response
+    public function index(Request $request): Response
     {
         return $this->render('store_branch_location/index.html.twig', [
             'store_branch_locations' => $this
                 ->storeBranchLocationService
-                ->getAllBranchLocations(),
+                ->getAllBranchLocations([
+                    'search_word' => $request->get('search'),
+                    'page'        => $request->query->getInt('page', 1)
+                ]),
         ]);
     }
 
