@@ -8,7 +8,11 @@ $ docker-compose build
 $ docker-compose up
 $ docker-compose exec php bash
 ```
-Inside container update DataBase scheme with following command:
+Inside PHP container update DataBase scheme with following command:
 ```sh
 $ bin/console doc:sch:upd --force
+```
+Fill DataBase with dummy data
+```sh
+$ bin/console doc:fix:load
 ```
