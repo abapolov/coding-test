@@ -20,7 +20,7 @@ services:
         volumes:
             - './docker/php/config/php_phpmyadmin.ini:/usr/local/etc/php/conf.d/php.ini'
         ports:
-            - '8080:80'
+            - '${PHPMYADMIN_PORT}:80'
 
     nginx:
         image: nginx:1.15.3-alpine
@@ -42,9 +42,11 @@ services:
             - './:/usr/src/app:cached'
             - './docker/composer/:/.composer'
             - './docker/php/config/php.ini:/usr/local/etc/php/conf.d/php.ini'
+        env_file:
+            - .env
         user: '${LOCAL_USER}'
 
     mailcatcher:
         image: schickling/mailcatcher
         ports:
-            - "1080:1080"
+            - "${MAIL_CATCHER_PORT}:1080"
