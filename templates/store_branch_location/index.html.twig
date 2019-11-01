@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}StoreBranchLocation index{% endblock %}
+
+{% block body %}
+    <h1>StoreBranchLocation index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Address</th>
+                <th>NumberOfEmployees</th>
+                <th>CreatedAt</th>
+                <th>UpdatedAt</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for store_branch_location in store_branch_locations %}
+            <tr>
+                <td>{{ store_branch_location.id }}</td>
+                <td>{{ store_branch_location.name }}</td>
+                <td>{{ store_branch_location.address }}</td>
+                <td>{{ store_branch_location.numberOfEmployees }}</td>
+                <td>{{ store_branch_location.createdAt ? store_branch_location.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ store_branch_location.updatedAt ? store_branch_location.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>
+                    <a href="{{ path('store_branch_location_show', {'id': store_branch_location.id}) }}">show</a>
+                    <a href="{{ path('store_branch_location_edit', {'id': store_branch_location.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="7">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('store_branch_location_new') }}">Create new</a>
+{% endblock %}
