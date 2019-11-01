@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Entity\Traits\TimestampableTrait;
+use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -23,16 +24,19 @@ class StoreBranchLocation
 
     /**
      * @ORM\Column(name="name", type="string", length=255)
+     * @Assert\NotBlank(message="This value can not be empty!"))
      */
     private $name;
 
     /**
      * @ORM\Column(name="address", type="string", length=500)
+     * @Assert\NotBlank(message="This value can not be empty!"))
      */
     private $address;
 
     /**
      * @ORM\Column(name="number_of_employees", type="integer")
+     * @Assert\NotBlank(message="This value can not be empty!"))
      */
     private $numberOfEmployees;
 
