@@ -2,7 +2,9 @@
 
 namespace App\Services;
 
+use App\Entity\StoreBranchLocation;
 use App\Handler\EntityHandler;
+use Doctrine\Common\Collections\Collection;
 
 /**
  * Class StoreBranchLocationService
@@ -24,5 +26,16 @@ class StoreBranchLocationService
     public function __construct(EntityHandler $entityHandler)
     {
         $this->entityHandler = $entityHandler;
+    }
+
+    /**
+     * @return StoreBranchLocation[]
+     */
+    public function getAllBranchLocations(): array
+    {
+        return $this
+            ->entityHandler
+            ->getRepository(StoreBranchLocation::class)
+            ->findAll();
     }
 }
