@@ -42,6 +42,26 @@ class StoreBranchLocationRepository extends ServiceEntityRepository
             ->setParameters([
                 'search'  => '%' . $searchWord . '%'
             ])
+            ->orderBy('sbl.id', 'DESC')
             ->getQuery();
+    }
+
+    /**
+     * @param array|null $ids
+     *
+     * @return array
+     */
+    public function getAverageOfEmployees(array $ids = null): array
+    {
+        $qb = $this
+            ->createQueryBuilder('sbl')
+            ->select('avg(sbl.numberOfEmployees) as averageNumber, COUNT(sbl) as count');
+
+        if ($ids) {
+            $qb->where('sbl.id IN (:ids)')->setParameter('ids', $ids);
+        }
+
+        return $qb->getQuery()
+            ->getArrayResult();
     }
 }
