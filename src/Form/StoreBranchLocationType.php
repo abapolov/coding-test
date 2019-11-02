@@ -24,13 +24,22 @@ class StoreBranchLocationType extends AbstractType
     {
         $builder
             ->add('name', TextType::class, [
-                'label' => 'Branch location name'
+                'label' => 'Branch location name',
+                'attr'  => [
+                    'placeholder' => 'Name'
+                ]
             ])
             ->add('address', TextType::class, [
-                'label' => 'Branch location address'
+                'label' => 'Branch location address',
+                'attr'  => [
+                    'placeholder' => 'Address'
+                ]
             ])
             ->add('numberOfEmployees', NumberType::class, [
-                'label' => 'Branch location number of employees'
+                'label' => 'Branch location number of employees',
+                'attr'  => [
+                    'placeholder' => 'Number of employees'
+                ]
             ]);
     }
 

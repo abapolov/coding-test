@@ -13,7 +13,16 @@
             <div class="container">
                 {% block breadcrambs %}
                 {% endblock %}
-
+                {% for message in app.flashes('success') %}
+                    <article class="message is-success">
+                        <div class="message-header">
+                            <p>Success</p>
+                        </div>
+                        <div class="message-body">
+                            {{ message }}
+                        </div>
+                    </article>
+                {% endfor %}
                 {% block body %}{% endblock %}
             </div>
         </section>

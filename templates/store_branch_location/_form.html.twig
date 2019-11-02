@@ -1,4 +1,25 @@
 {{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
+    <div class="field">
+        <label class="label">{{ form_label(form.name) }}</label>
+        <div class="control">
+            {{ form_widget(form.name, { attr: { 'class': 'input' } }) }}
+            <p class="help is-danger">{{ form_errors(form.name) }}</p>
+        </div>
+    </div>
+    <div class="field">
+        <label class="label">{{ form_label(form.address) }}</label>
+        <div class="control">
+            {{ form_widget(form.address, { attr: { 'class': 'input' } }) }}
+            <p class="help is-danger">{{ form_errors(form.address) }}</p>
+        </div>
+    </div>
+    <div class="field">
+        <label class="label">{{ form_label(form.numberOfEmployees) }}</label>
+        <div class="control">
+            {{ form_widget(form.numberOfEmployees, { attr: { 'class': 'input' } }) }}
+            <p class="help is-danger">{{ form_errors(form.numberOfEmployees) }}</p>
+        </div>
+    </div>
+    <button class="button is-success">{{ button_label|default('Save') }}</button>
+    <a class="button" href="{{ path('store_branch_location_index') }}">back to list</a>
 {{ form_end(form) }}
