@@ -46,7 +46,7 @@ class AverageEmployeesCommand extends Command
     {
         $this
             ->setDescription('This command allows us calculate average of store branch location employees.')
-            ->addArgument('ids', InputArgument::OPTIONAL | InputArgument::IS_ARRAY, 'Ids array. E.g. 1 2 3');
+            ->addArgument('ids', InputArgument::OPTIONAL, 'Ids array. E.g. 1, 2, 3');
     }
 
     /**
@@ -61,7 +61,7 @@ class AverageEmployeesCommand extends Command
         $resultArray = $this
             ->entityHandler
             ->getRepository(StoreBranchLocation::class)
-            ->getAverageOfEmployees($input->getArgument('ids'));
+            ->getAverageOfEmployees(explode(',', $input->getArgument('ids')));
 
         $io->note(sprintf('Total store branch locations: %s', $resultArray[0]['count']));
         $io->success('Store branch locations employees average: ' . round($resultArray[0]['averageNumber']));
